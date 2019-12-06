@@ -1,14 +1,9 @@
 package cn.doodlister.dispatcher.util;
 
 import cn.doodlister.dispatcher.entity.Submission;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.Test;
-import org.omg.SendingContext.RunTime;
 
-import java.io.*;
-import java.util.Hashtable;
-
-import static org.junit.Assert.*;
+import java.io.IOException;
 
 public class UtilTest {
 

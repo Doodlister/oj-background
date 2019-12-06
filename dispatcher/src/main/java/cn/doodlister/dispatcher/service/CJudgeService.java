@@ -19,6 +19,7 @@ public class CJudgeService extends JudgeService {
     @Override
     protected Result compile(String path)  {
         sandbox(path,"",TIME_LIMIT_ONE_MIN,MEMORY_LIMIT_OME_MB);
+        return null;
     }
 
     @Override
@@ -38,8 +39,8 @@ public class CJudgeService extends JudgeService {
         System.out.println(memoryLimit);
         Result result = new Result();
         //编译成功
-        result.setResult(Result.ResultType.ACCEEPTED);
-        result.setOutputPath("E:\\test\\output.txt");
+        //result.setResult(Result.ResultType.ACCEEPTED);
+        //result.setOutputPath("E:\\test\\output.txt");
         return result;
     }
 

@@ -13,9 +13,7 @@ public class Submission {
 
     private Integer id;
 
-
     private Integer contestId;
-
 
     private Timestamp createTime;
 
@@ -32,12 +30,9 @@ public class Submission {
     private String statisticInfo;
 
     private String username;
-
     private String ip;
 
-
     private User submitByUser;
-
 
     private Problem submitProblem;
 
