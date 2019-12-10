@@ -1,4 +1,4 @@
-package cn.doodlister.judger.mq.producter;
+package cn.doodlister.judger.mq;
 
 import cn.doodlister.judger.entity.Submission;
 import cn.doodlister.judger.util.Util;
@@ -11,7 +11,7 @@ import javax.jms.Destination;
 
 
 @Service
-public class MQProducter{
+public class MQSender {
 
     @Autowired
     private JmsMessagingTemplate  jmsTemplate;

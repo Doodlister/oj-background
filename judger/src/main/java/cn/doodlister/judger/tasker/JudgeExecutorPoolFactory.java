@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-@Service
+
 public class JudgeExecutorPoolFactory {
     private static int coreNum = Runtime.getRuntime().availableProcessors();
     private static LinkedBlockingQueue linkedBlockingQueue = new LinkedBlockingQueue(coreNum);

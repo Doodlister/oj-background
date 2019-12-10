@@ -1,5 +1,6 @@
 package cn.doodlister.judger.service;
 import cn.doodlister.judger.dao.ProblemMapper;
+import cn.doodlister.judger.dao.SubmissionMapper;
 import cn.doodlister.judger.dao.TestCaseMapper;
 import cn.doodlister.judger.entity.*;
 import cn.doodlister.judger.exception.CompileException;
@@ -22,6 +23,8 @@ public class JudgeService extends BaseService {
     TestCaseMapper testCaseMapper;
     @Autowired
     ProblemMapper problemMapper;
+    @Autowired
+    SubmissionMapper submissionMapper;
 
     /**
      * 写入testCase到workDir
@@ -174,7 +177,8 @@ public class JudgeService extends BaseService {
             }
         }
     }
-    public void judge(Submission submission) throws Exception {
+    public void judge(String submissionId) throws Exception {
+        Submission submission = submissionMapper.findSubmissionById(Integer.parseInt(submissionId));
         String lang = submission.getLanguage();
         if (lang == null) {
             logger.error("[submission id = "+submission.getId()+ " ] can't find language [" + lang + "] config ");

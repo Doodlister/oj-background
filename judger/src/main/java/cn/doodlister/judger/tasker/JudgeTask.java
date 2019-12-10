@@ -14,26 +14,27 @@ public class JudgeTask  implements Runnable{
     private static final Logger logger = LoggerFactory.getLogger(JudgeTask.class);
     @Autowired
     JudgeService judgeService;
-    private Submission submission;
-    public JudgeTask(Submission submission){
-        this.submission = submission;
+
+    private String submissionId;
+    public JudgeTask(String submissionId){
+        this.submissionId = submissionId;
     }
     @Override
     public void run() {
         try {
-            judgeService.judge(submission);
+            judgeService.judge(submissionId);
         } catch (EnvironmentalErrorException e) {
-            logger.error("[submission id = "+submission.getId()+"] initialize Env error " + e.getMessage());
+            logger.error("[submission id = "+submissionId+"] initialize Env error " + e.getMessage());
             //发送消息
         }catch (CompileException e) {
-            logger.error("[submission id = "+submission.getId()+"] compile error " + e.getMessage());
+            logger.error("[submission id = "+submissionId+"] compile error " + e.getMessage());
             //发送消息
         }catch (RunException e) {
-            logger.error("[submission id = "+submission.getId()+"] run error " + e.getMessage());
+            logger.error("[submission id = "+submissionId+"] run error " + e.getMessage());
         }catch (WrongAnswerException e) {
-            logger.error("[submission id = "+submission.getId()+"] wrong answer error " + e.getMessage());
+            logger.error("[submission id = "+submissionId+"] wrong answer error " + e.getMessage());
         }catch (Exception e){
-            logger.error("[submission id = "+submission.getId()+"] error " + e.getMessage());
+            logger.error("[submission id = "+submissionId+"] error " + e.getMessage());
         }
     }
 }
