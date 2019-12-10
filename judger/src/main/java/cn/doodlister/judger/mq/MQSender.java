@@ -8,6 +8,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.jms.Destination;
+import java.util.HashMap;
 
 
 @Service
@@ -18,13 +19,14 @@ public class MQSender {
 
 
 
-    public void sendMessage(Destination destination, final String message){
-
-        jmsTemplate.convertAndSend(destination,message);
+    public void sendMessage(final HashMap<String,String> messageMap){
+        Destination destination = new ActiveMQQueue("doj");
+        String json = Util.beanToString(messageMap);
+        jmsTemplate.convertAndSend(destination,json);
     }
     public void sendResult (Submission submission){
         /**
-         *  0 Wait
+         * 0 Wait
          * 1 ：AC	Accepted	通过
          * 2 :WA	Wrong Answer	答案错误
          * 3 :TLE	Time Limit Exceed	超时

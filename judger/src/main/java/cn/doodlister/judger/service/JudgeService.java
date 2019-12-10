@@ -157,11 +157,11 @@ public class JudgeService extends BaseService {
         ExecuteResult execResult = executeService.exec(timeLimit * 2, timeLimit, -1,
                 memoryLimit, 1, 1024 * 1024 * 1024,
                 inputPath, outputPath, errorPath, logPath, exePath, null, null);
-        if (ExecuteResult.ResultEnum.SUCCESS != execResult.getResult()) {
-            throw new RunException(execResult.getResult().getMeaning());
-        }
         if (ExecuteResult.ErrorEnum.SUCCESS != execResult.getError()) {
             throw new RunException(execResult.getError().getMeaning());
+        }
+        if (ExecuteResult.ResultEnum.SUCCESS != execResult.getResult()) {
+            throw new RunException(execResult.getResult().getMeaning());
         }
     }
 
