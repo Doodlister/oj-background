@@ -22,7 +22,7 @@ public class JudgeTask  implements Runnable{
     public void run() {
         try {
             environmentalService.initializeEnv(submission);
-            //executeService.execute()
+
         } catch (EnvironmentalErrorException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -1,7 +1,8 @@
 package cn.doodlister.dispatcher.service;
 
+import cn.doodlister.dispatcher.dao.LanguageMapper;
 import cn.doodlister.dispatcher.dao.TestCaseMapper;
-import cn.doodlister.dispatcher.entity.Lanauages;
+import cn.doodlister.dispatcher.entity.Language;
 import cn.doodlister.dispatcher.entity.Submission;
 import cn.doodlister.dispatcher.entity.TestCase;
 import cn.doodlister.dispatcher.exception.EnvironmentalErrorException;
@@ -21,21 +22,29 @@ public class EnvironmentalService extends BaseService{
     private final static String basePath = "/home/zeou/judge";
     @Autowired
     TestCaseMapper testCaseMapper;
-
-
-
+    @Autowired
+    LanguageMapper languageMapper;
+    /**
+     * workDir格式为 {basePath}/run{threadIndex}
+     * @return workDirFile
+     */
     private File getWorkDirFile() {
         String threadName = Thread.currentThread().getName();
         if (!threadName.startsWith("Judge-Thread-")) {
             logger.error("Please run this service in Judge Thread Pool");
             return null;
         }
-        String workDir = basePath + "/" + threadName.substring("Judge-Thread-".length() - 1);
+        String workDir = basePath + "/run" + threadName.substring("Judge-Thread-".length() - 1);
         File workDirFile = new File(workDir);
         return workDirFile;
     }
 
-
+    /**
+     * 写入testCase到workDir
+     * 格式为 0.in 0.out 1.in 1.out ...
+     * @param testCases
+     * @throws IOException
+     */
     private void writeTestCase(List<TestCase> testCases) throws IOException {
         File workDirFile = getWorkDirFile();
         int i=0;
@@ -47,16 +56,35 @@ public class EnvironmentalService extends BaseService{
             i++;
         }
     }
-    private void writeSubmission(Submission submission) throws IOException {
+
+    /**
+     * 写入submissionCode到workDir
+     * @param submission
+     * @throws IOException
+     */
+    private void writeSubmission(Submission submission) throws IOException, EnvironmentalErrorException {
         File workDirFile = getWorkDirFile();
         int i=0;
         String code = submission.getCode();
-        //TODO 级联查询 查到language
-        submission.getLanguage();
-        Lanauages lanauages = null;
-        String fileName = lanauages.getFileName();
+        String lang = submission.getLanguage();
+        Language language = languageMapper.findLanguageByName(lang);
+        if(language == null){
+            throw new EnvironmentalErrorException("unsupport language [" + lang + "]");
+        }
+        String fileName = language.getFileName();
         writeToFile(code,workDirFile+"/"+fileName);
     }
+
+    /**
+     * 初始化判题环境
+     * 1.判断workDir是否存在，不存在则创建
+     * 2.清空workDir
+     * 3.从数据库查询testCase，并写入workDir
+     * 4.写入用户代码
+     * @param submission
+     * @throws EnvironmentalErrorException
+     * @throws IOException
+     */
     public void initializeEnv(Submission submission) throws EnvironmentalErrorException, IOException {
         File workDirFile = getWorkDirFile();
         if (!workDirFile.exists()) {
@@ -66,10 +94,6 @@ public class EnvironmentalService extends BaseService{
         }
         cleanDir(workDirFile);
         writeTestCase(testCaseMapper.findTestCasesBySubmissionId(submission.getId()));
-//        if(submission == null){
-//            logger.error("can't find submission by id [" + submission.getId() + "]");
-//            throw new EnvironmentalErrorException("can't find submission by id [" + submissionId + "]");
-//        }
         writeSubmission(submission);
     }
 

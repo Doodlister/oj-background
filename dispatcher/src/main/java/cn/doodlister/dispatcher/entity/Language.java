@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-public class Lanauages {
+public class Language {
     private Integer id;
     private String languageName;
     private String compileCommand;
