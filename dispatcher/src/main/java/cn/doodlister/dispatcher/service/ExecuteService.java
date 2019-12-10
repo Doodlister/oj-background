@@ -1,13 +1,23 @@
 package cn.doodlister.dispatcher.service;
 
+import org.springframework.stereotype.Service;
+
+@Service("prototype")
 public class ExecuteService {
     static {
         System.load("/home/zeou/code/CLionProjects/sanbox/cmake-build-debug/libsanbox.so");
     }
-    public native String execute(int maxCpuTime, int maxRealTime, int maxStack, int maxMemory,
+    private native String execute(int maxCpuTime, int maxRealTime, int maxStack, int maxMemory,
                                  int maxProcessNumber, long maxOutputSize, String inputPath,String outputPath,
                                  String errorPath, String logPath, String exePath,String[] args,String[] env);
 
+
+    public void compile(){
+
+    }
+    public void run(){
+
+    }
     public static void main(String[] args) {
         String output_path = "/home/judge/run0/Main";
         String error_path = "/home/judge/run0/err.out";

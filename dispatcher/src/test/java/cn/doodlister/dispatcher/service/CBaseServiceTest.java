@@ -30,23 +30,7 @@ public class CJudgeServiceTest {
         problem.setTestCases(new LinkedList<>());
         problem.getTestCases().add(testCase);
         submission.setSubmitProblem(problem);
-        CJudgeService judgeService = new CJudgeService(submission);
 
-
-        try {
-            System.out.println(judgeService.judge());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CompileException e) {
-            e.printStackTrace();
-        } catch (TimeLimitExceededException e) {
-            e.printStackTrace();
-        } catch (MemoryLimitExceedException e) {
-            e.printStackTrace();
-        } catch (WrongAnswerException e) {
-            e.printStackTrace();
-        }
     }
 
 }
