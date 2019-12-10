@@ -1,6 +1,6 @@
 package cn.doodlister.dispatcher.exception;
 
-public class WrongAnswerException extends Exception {
+public class WrongAnswerException  extends Exception{
     public WrongAnswerException() {
     }
 

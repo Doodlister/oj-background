@@ -2,6 +2,7 @@ package cn.doodlister.dispatcher.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@ToString
 public class Submission {
 
     private Integer id;
@@ -30,11 +32,12 @@ public class Submission {
     private String statisticInfo;
 
     private String username;
+
     private String ip;
 
-    private User submitByUser;
+    private int submitByUserId;
 
-    private Problem submitProblem;
+    private int submitProblemId;
 
     @Override
     public boolean equals(Object o) {

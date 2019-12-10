@@ -12,13 +12,9 @@ import java.util.Objects;
 @Setter
 public class Problem {
 
-
-
-
     private Integer id;
 
     private String title;
-
 
     private String description;
 
