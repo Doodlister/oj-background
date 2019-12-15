@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface LanguageMapper {
-    @Select("SELECT * FROM language WHERE language_name = #{name}")
+    @Select("SELECT * FROM `language` WHERE language_name = #{name}")
     Language findLanguageByName(String name);
 }

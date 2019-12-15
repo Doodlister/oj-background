@@ -46,7 +46,7 @@ public class Util {
         }else if(clazz == long.class || clazz==Long.class){
             return (T)Long.valueOf(str);
         }else {
-            return JSON.toJavaObject(JSON.parseObject(str),clazz);
+            return JSON.parseObject(str,clazz);
         }
     }
     public static String generateUUID(){

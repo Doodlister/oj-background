@@ -1,6 +1,7 @@
 package cn.doodlister.judger.service;
 
 import cn.doodlister.judger.dao.LanguageMapper;
+import cn.doodlister.judger.exception.EnvironmentalErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -11,15 +12,15 @@ import java.io.IOException;
 public abstract class BaseService {
     @Autowired
     protected LanguageMapper languageMapper;
-    protected final static String basePath = "/home/zeou/judge";
+    protected final static String basePath = "/home/judge";
     /**
      * workDir格式为 {basePath}/run{threadIndex}
      * @return workDirFile
      */
-    protected File getWorkDirFile() throws Exception {
+    protected File getWorkDirFile() throws EnvironmentalErrorException {
         String threadName = Thread.currentThread().getName();
         if (!threadName.startsWith("Judge-Thread-")) {
-            throw new Exception("Please run this service in Judge Thread Pool");
+            throw new EnvironmentalErrorException("Please run this service in Judge Thread Pool");
         }
         String workDir = basePath + "/run" + threadName.substring("Judge-Thread-".length() - 1);
         File workDirFile = new File(workDir);
@@ -106,7 +107,7 @@ public abstract class BaseService {
         return true;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println(diff("adsfasadsf df","adsfasadsf df"));
     }
 

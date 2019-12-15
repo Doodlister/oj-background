@@ -26,7 +26,7 @@ public class ExecuteResult {
         return ResultEnum.findByCode(result);
     }
     public ErrorEnum getError(){
-        return ErrorEnum.findByCode(result);
+        return ErrorEnum.findByCode(error);
     }
 
     @Getter

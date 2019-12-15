@@ -4,24 +4,28 @@ import cn.doodlister.judger.entity.ExecuteResult;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 
-@Service("prototype")
+
+@Service
 public class ExecuteService extends BaseService{
     static {
         System.load("/home/zeou/code/CLionProjects/sanbox/cmake-build-debug/libsanbox.so");
     }
+    public final static int STANDARD_MB = 1024 * 1024;
     private native String execute(int maxCpuTime, int maxRealTime, int maxStack, int maxMemory,
                                  int maxProcessNumber, long maxOutputSize, String inputPath, String outputPath,
                                  String errorPath, String logPath, String exePath, String[] args, String[] env);
 
     /**
      *
-     * @param maxCpuTime
-     * @param maxRealTime
+     * @param maxCpuTime This is a limit, in seconds, on the amount of CPU time that
+     *               the process can consume.
+     * @param maxRealTime 单位 Second
      * @param maxStack
-     * @param maxMemory
+     * @param maxMemory 单位 byte
      * @param maxProcessNumber
-     * @param maxOutputSize
+     * @param maxOutputSize  This is the maximum size in bytes of filess
      * @param inputPath
      * @param outputPath
      * @param errorPath
@@ -39,20 +43,32 @@ public class ExecuteService extends BaseService{
         ExecuteResult executeResult = JSON.parseObject(execute, ExecuteResult.class);
         return executeResult;
     }
+    public void chown(String user,String fileName) throws IOException, InterruptedException {
+        String command = "chown  %s %s";
+        command = String.format(command,user,fileName);
+        Runtime.getRuntime().exec(command).waitFor();
+    }
+    public void chgrp(String group,String fileName) throws IOException, InterruptedException {
+        String command = "chgrp  %s %s";
+        command = String.format(command,group,fileName);
+        Runtime.getRuntime().exec(command).waitFor();
+    }
+    public static void main(String[] args) throws Exception {
+        ExecuteService executeService = new ExecuteService();
+        String workDirFile = "/home/judge/run-02";
+        int testCaseIndex = 0;
+        int timeLimit = 102400;
+        int memoryLimit = 102400000;
+        String inputPath = workDirFile+"/"+testCaseIndex+".in";
+        String outputPath = workDirFile+"/"+testCaseIndex+".user.out";
+        String errorPath = workDirFile+"/"+testCaseIndex+".error";
+        String logPath = workDirFile+"/"+testCaseIndex+".log";
+        String exePath = workDirFile + "/Main";
+        //TODO 这里的单位还需要确认一下
+        ExecuteResult execResult = executeService.exec(timeLimit * 2, timeLimit, 99999,
+                memoryLimit, 2, 1024 * 1024 * 1024,
+                inputPath, outputPath, errorPath, logPath, exePath, null, null);
 
-    public static void main(String[] args) {
-        String output_path = "/home/judge/run0/Main";
-        String error_path = "/home/judge/run0/err.out";
-        String exe_path = "/usr/bin/gcc";
-        String log_path = "/home/judge/run0/log.out";
-        String[] command = { "/usr/bin/gcc", "/home/judge/run0/Main.c", "-o", "/home/judge/run0/Main", "-fno-asm", "-Wall",
-                "-lm", "--static", "-std=c99", "-DONLINE_JUDGE" };
-        String[] env = { "PATH=/usr/bin" };
-        ExecuteService e = new ExecuteService();
-        ExecuteResult executeResult = e.exec(-1, -1, 99999999, -1,
-                -1, -1
-                ,null, null,error_path,log_path,exe_path, command,env);
-
-        System.out.println(executeResult.getResult().getMeaning());
+        System.out.println(execResult.getResult().getMeaning());
     }
 }

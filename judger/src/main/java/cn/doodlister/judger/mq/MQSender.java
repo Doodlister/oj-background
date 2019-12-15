@@ -20,7 +20,7 @@ public class MQSender {
 
 
     public void sendMessage(final HashMap<String,String> messageMap){
-        Destination destination = new ActiveMQQueue("doj");
+        Destination destination = new ActiveMQQueue("dojResult");
         String json = Util.beanToString(messageMap);
         jmsTemplate.convertAndSend(destination,json);
     }
